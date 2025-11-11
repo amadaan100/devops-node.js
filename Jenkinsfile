@@ -2,14 +2,14 @@ pipeline {
   agent any
 
   environment {
-    IMAGE = "your-dockerhub-username/devops-demo"
-    DOCKER_CRED = credentials('dockerhub-creds')   // docker username/password
+    IMAGE = "amadaan100/devops-demo"
+    DOCKER_CRED = credentials('dockerhub-creds')
   }
 
   stages {
     stage('Checkout') {
       steps {
-        git branch: 'main', url: 'https://github.com/<your-github-username>/devops-demo.git'
+        git branch: 'main', url: 'https://github.com/amadaan100/devops-node.js.git'
       }
     }
 
@@ -23,7 +23,6 @@ pipeline {
     stage('Test (smoke)') {
       steps {
         sh 'docker run --rm -d --name temp-devops-test -p 3000:3000 ${IMAGE}:latest || true'
-        // wait a bit, then test
         sh 'sleep 3'
         sh 'curl -f http://localhost:3000/ || (docker logs temp-devops-test && false)'
         sh 'docker stop temp-devops-test || true'
@@ -47,10 +46,10 @@ pipeline {
       sh 'docker image prune -f || true'
     }
     success {
-      echo "Build succeeded: ${env.BUILD_URL}"
+      echo "✅ Build succeeded: ${env.BUILD_URL}"
     }
     failure {
-      echo "Build FAILED: ${env.BUILD_URL}"
+      echo "❌ Build FAILED: ${env.BUILD_URL}"
     }
   }
 }
