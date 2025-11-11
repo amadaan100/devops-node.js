@@ -24,7 +24,7 @@ pipeline {
       steps {
         sh 'docker run --rm -d --name temp-devops-test -p 3000:3000 ${IMAGE}:latest || true'
         sh 'sleep 3'
-        sh 'curl -f http://localhost:3000/ || (docker logs temp-devops-test && false)'
+        sh 'curl -f http://10.129.145.128:3000/ || (docker logs temp-devops-test && false)'
         sh 'docker stop temp-devops-test || true'
       }
     }
